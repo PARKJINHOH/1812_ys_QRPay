@@ -19,8 +19,18 @@ public class MainActivity extends AppCompatActivity {
 
         etID = (EditText) findViewById(R.id.etID);
         etPW = (EditText) findViewById(R.id.etPW);
+
         btLogin = (Button) findViewById(R.id.btLogin);
         btJoin = (Button) findViewById(R.id.btJoin);
+
+        btLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DB연동
+                Intent intent = new Intent(getApplicationContext(), main_formActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btJoin.setOnClickListener(new View.OnClickListener() {
             @Override

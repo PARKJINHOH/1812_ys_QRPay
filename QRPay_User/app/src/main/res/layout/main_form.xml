@@ -5,11 +5,21 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <Button
-        android:id="@+id/btQRCodeScan"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:src="@drawable/qrpay_scan"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR코드 스캔"/>
+        android:text="QR코드 스캔하기"
+        android:textSize="30dp"/>
+
+    <!--<Button-->
+        <!--android:id="@+id/btQRCodeScan"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="QR코드 스캔"/>-->
 
     <Button
         android:id="@+id/btMyCash"

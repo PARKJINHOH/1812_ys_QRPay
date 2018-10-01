@@ -1,5 +1,6 @@
 package com.example.jinhoh.qrpay_user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,39 +30,19 @@ public class new_customerActivity extends AppCompatActivity {
         btJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-//                    if (password.equals(ckpassword)) {
-//                        String sql = "insert into member values(?,?);";
-//                        Object[] args = {id, password};
-//                        mydb.execSQL(sql, args);
-//                        mydb.close();
-//                        try {
-//                            String coinsql = "insert into coin(coin_id) values(?);";
-//                            Object[] argscoin = {id};
-//                            coindb.execSQL(coinsql, argscoin);
-//                            coindb.close();
+
+//                if (etJoinPw.equals(etCheckPw)) {
+//                    try {
 //
-//                            String coinpricesql = "insert into coinprice(coin_price_id) values(?);";
-//                            coinpricedb.execSQL(coinpricesql, argscoin);
-//                            coinpricedb.close();
-//
-//
-//                        } catch (Exception e) {
-//                            coindb.close();
-//                            coinpricedb.close();
-//                            Toast.makeText(getApplicationContext(), "DB생성 실패", Toast.LENGTH_LONG).show();
-//                        }
-//                        Toast.makeText(getApplicationContext(), id + "님 회원가입을 축하드립니다", Toast.LENGTH_LONG).show();
-//                        finish();
-//                    } else {
-//                        edtMemberPW.setText("");
-//                        edtMemberPWCheck.setText("");
-//                        Toast.makeText(getApplicationContext(), "비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
-//                        mydb.close();
+//                    } catch (Exception e) {
+//                        Toast.makeText(getApplicationContext(), "동일한 사용자가 있습니다.", Toast.LENGTH_LONG).show();
 //                    }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "동일한 사용자가 있습니다.", Toast.LENGTH_LONG).show();
-                }
+//                } else {
+//                    etJoinPw.setText("");
+//                    etCheckPw.setText("");
+//                    Toast.makeText(getApplicationContext(), "비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+//                }
+
             }
         });
 
