@@ -25,20 +25,18 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class main_formActivity extends AppCompatActivity {
 
-    Button btQRCodeScan, btMyCash;
+    Button btMyCash;
+    ImageView IvQRCodeScan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_form);
 
-        btQRCodeScan = (Button) findViewById(R.id.btQRCodeScan);
+        IvQRCodeScan = (ImageView) findViewById(R.id.IvQRCodeScan);
         btMyCash = (Button) findViewById(R.id.btMyCash);
 
-
-
-
-        btQRCodeScan.setOnClickListener(new View.OnClickListener() {
+        IvQRCodeScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startQRcode();
@@ -49,7 +47,7 @@ public class main_formActivity extends AppCompatActivity {
     }
 
     // qr코드 스캔 메소드
-    public void startQRcode(){
+    public void startQRcode() {
         new IntentIntegrator(this).initiateScan();
     }
 
