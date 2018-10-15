@@ -1,7 +1,14 @@
 # QRPay
 QR코드를 이용한 결제 및 매장 주문 시스템
 
-## 현재 프로젝트 상황 : 개발중
+## 현재 프로젝트 상황
+개발중
+
+## 문제점
+1. 회원가입 ID 중복 방지
+
+# 현재 구현중
+1. 로그인(ID,PW)
 
 ## 프로젝트 내용
 QR코드를 이용한 메뉴 보기 & 결제 시스템
@@ -10,10 +17,10 @@ ex) 햄버거집의 무인 포스기 대체할 수 있으며, 테이블마다 QR
 주문받는 사람이 없어도 되는 장점이 있음.
 
 ## 개발 인원
-3인 (박진호, 지병천, 홍철민)
+3인 (박진호(USER_VERSION), 지병천(HOMEPAGE), 홍철민(COMPANY_VERSION))
 
 ## 개발 환경
-Server : Amazon AWS(Seoul Server), Ubuntu Server 18.04 LTS (HVM) SSD Volume Type, pm2 <br>
+Server : Amazon AWS(Seoul Server), Linux Server <br>
 IDE : Android Studio, Putty <br>
 Language : JAVA 1.8, Tomcat, MYSQL
 
