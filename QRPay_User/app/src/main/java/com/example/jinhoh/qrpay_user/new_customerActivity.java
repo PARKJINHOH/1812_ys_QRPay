@@ -27,6 +27,7 @@ public class new_customerActivity extends AppCompatActivity {
 
     EditText etNickName, etJoinId, etJoinPw, etCheckPw;
     Button btJoin, btCancel;
+    String id, pwd, pwdck, nickname;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,20 +48,10 @@ public class new_customerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String id = etJoinId.getText().toString();
-                String pwd = etJoinPw.getText().toString();
-                String pwdck = etCheckPw.getText().toString();
-                String nickname = etNickName.getText().toString();
-
-                if(id.equals("") || pwd.equals("")){
-                    Toast.makeText(getApplicationContext(), "아이디 및 비밀번호를 확인해 주세요", Toast.LENGTH_LONG).show();
-                }else if(id.replace(" ", "").equals("") || pwd.replace(" ", "").equals("")){
-                    Toast.makeText(getApplicationContext(), "아이디 및 비밀번호에 공백이 있습니다.", Toast.LENGTH_LONG).show();
-                }
-
-                if(nickname.equals("") || nickname.replace(" ", "").equals("")){
-                    Toast.makeText(getApplicationContext(), "닉네임을 확인해 주세요.", Toast.LENGTH_LONG).show();
-                }
+                id = etJoinId.getText().toString();
+                pwd = etJoinPw.getText().toString();
+                pwdck = etCheckPw.getText().toString();
+                nickname = etNickName.getText().toString();
 
                 if (pwd.equals(pwdck)) {
                     InsertData task = new InsertData();
@@ -106,10 +97,7 @@ public class new_customerActivity extends AppCompatActivity {
 
             progressDialog.dismiss();
 
-//            if(result.equals(0)){
-//                Toast.makeText(getApplicationContext(), "중복된 ID가 있습니다.", Toast.LENGTH_LONG).show();
-//            }
-            Toast.makeText(getApplicationContext(), "onPostExecute : " + result, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             Log.d(TAG, "POST response  - " + result);
         }
 
@@ -117,13 +105,13 @@ public class new_customerActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String id = (String) params[1];
-            String pwd = (String) params[2];
-            String nickname = (String) params[3];
-
             // 1. PHP 파일을 실행시킬 수 있는 주소와 전송할 데이터를 준비합니다.
             // POST 방식으로 데이터 전달시에는 데이터가 주소에 직접 입력되지 않습니다.
             String serverURL = (String) params[0];
+
+            String id = (String) params[1];
+            String pwd = (String) params[2];
+            String nickname = (String) params[3];
 
             // HTTP 메시지 본문에 포함되어 전송되기 때문에 따로 데이터를 준비해야 합니다.
             // 전송할 데이터는 “이름=값” 형식이며 여러 개를 보내야 할 경우에는 항목 사이에 &를 추가합니다.
