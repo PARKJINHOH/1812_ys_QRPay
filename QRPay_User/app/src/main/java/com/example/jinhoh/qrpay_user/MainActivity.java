@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         btLogin = (Button) findViewById(R.id.btLogin);
         btJoin = (Button) findViewById(R.id.btJoin);
-
 
 
         //로그인
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             progressDialog = ProgressDialog.show(MainActivity.this,
                     "Please Wait", null, true, true);
         }
@@ -94,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "response - " + result);
 
+            //서버에 error가 있으면 json을 못받아 올 때,(null값이라도 받으면 else로)
             if (result == null) {
                 Log.d(TAG, "php에러 메세지 - " + errorString);
             } else {
@@ -101,17 +99,22 @@ public class MainActivity extends AppCompatActivity {
                 jsonresult = result;
                 showResult();
 
-                if(ckPW.equals(pwd)){
+                if (ckPW.equals(pwd)) {
+                    Toast.makeText(getApplicationContext(), nickname + "님 환영합니다.", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), main_formActivity.class);
+                    intent.putExtra("num", num);
+                    intent.putExtra("id", id);
+                    intent.putExtra("nickname", nickname);
                     startActivity(intent);
-                }else{
+                    etID.setText("");
+                    etPW.setText("");
+                } else {
                     Toast.makeText(getApplicationContext(), "다시 로그인해 주세요.", Toast.LENGTH_LONG).show();
                     etID.setText("");
                     etPW.setText("");
                 }
             }
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -120,12 +123,10 @@ public class MainActivity extends AppCompatActivity {
             String id = (String) params[1];
             String postParameters = "id=" + id;
 
-
             try {
 
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
 
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
@@ -133,12 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.connect();
 
-
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 outputStream.write(postParameters.getBytes("UTF-8"));
                 outputStream.flush();
                 outputStream.close();
-
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
@@ -149,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     inputStream = httpURLConnection.getErrorStream();
                 }
-
 
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -165,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
                 return sb.toString().trim();
 
-
             } catch (Exception e) {
 
                 Log.d(TAG, "GetData : Error ", e);
@@ -173,10 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
                 return null;
             }
-
         }
     }
-
 
     //파싱하는 메소드
     private void showResult() {
@@ -187,13 +182,11 @@ public class MainActivity extends AppCompatActivity {
         String TAG_PWD = "pwd";
         String TAG_NICKNAME = "nickname";
 
-
         try {
             JSONObject jsonObject = new JSONObject(jsonresult);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 num = item.getString(TAG_NUM);
@@ -201,13 +194,8 @@ public class MainActivity extends AppCompatActivity {
                 pwd = item.getString(TAG_PWD);
                 nickname = item.getString(TAG_NICKNAME);
             }
-
-
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
     }
-
-
 }
