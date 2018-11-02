@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 
 import android.content.Intent;
 import android.view.View;
@@ -32,7 +31,7 @@ public class main_formActivity extends AppCompatActivity {
 
     //서버와 연결한 IP주소
     private static String IP_ADDRESS = "ec2-13-124-143-232.ap-northeast-2.compute.amazonaws.com";
-    private static String TAG = "phptest";
+    private static String TAG = "LOG";
 
     ImageView IvQRCodeScan, Ivrefresh;
     String num, id, nickname;
@@ -94,7 +93,8 @@ public class main_formActivity extends AppCompatActivity {
             } else {
                 // 스캔된 QRCode --> result.getContents()
                 try {
-                    uri = Uri.parse(result.getContents());
+                    Log.d(TAG, "QRScan - " + result.getContents() + "id=" + id + "num=" + num);
+                    uri = Uri.parse(result.getContents() + "id=" + id + "num=" + num);
                     Intent intenturi = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intenturi);
                 } catch (Exception e) {
