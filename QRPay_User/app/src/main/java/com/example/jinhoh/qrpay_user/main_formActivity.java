@@ -9,6 +9,7 @@ import android.util.Log;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ import java.net.URL;
 public class main_formActivity extends AppCompatActivity {
 
     //서버와 연결한 IP주소
-    private static String IP_ADDRESS = "ec2-13-124-143-232.ap-northeast-2.compute.amazonaws.com";
+    private static String IP_ADDRESS = "ec2-13-209-98-128.ap-northeast-2.compute.amazonaws.com";
     private static String TAG = "LOG";
 
     ImageView IvQRCodeScan, Ivrefresh;
@@ -38,6 +39,7 @@ public class main_formActivity extends AppCompatActivity {
     TextView MYnickname, MYmoney;
     Uri uri;
     String jsonresult, usermoney;
+    Button BTorderHistory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class main_formActivity extends AppCompatActivity {
         Ivrefresh = (ImageView) findViewById(R.id.Ivrefresh);
 
         IvQRCodeScan = (ImageView) findViewById(R.id.IvQRCodeScan);
+
+        BTorderHistory = (Button) findViewById(R.id.BTorderHistory);
 
         Intent intent = getIntent();
         num = intent.getStringExtra("num");
@@ -65,6 +69,15 @@ public class main_formActivity extends AppCompatActivity {
             public void onClick(View v) {
                 GetMoneyData task = new GetMoneyData();
                 task.execute("http://" + IP_ADDRESS + "/user_money.php", id);
+            }
+        });
+
+        BTorderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(), pay_historyActivity.class);
+                in.putExtra("id", id);
+                startActivity(in);
             }
         });
 
@@ -93,8 +106,8 @@ public class main_formActivity extends AppCompatActivity {
             } else {
                 // 스캔된 QRCode --> result.getContents()
                 try {
-                    Log.d(TAG, "QRScan - " + result.getContents() + "id=" + id + "num=" + num);
-                    uri = Uri.parse(result.getContents() + "id=" + id + "num=" + num);
+                    Log.d(TAG, "QRScan - " + result.getContents() + "?id=" + id + "&nick=" + nickname);
+                    uri = Uri.parse(result.getContents() + "?id=" + id + "&nick=" + nickname);
                     Intent intenturi = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intenturi);
                 } catch (Exception e) {
@@ -197,7 +210,7 @@ public class main_formActivity extends AppCompatActivity {
     //파싱하는 메소드
     private void showResult() {
 
-        String TAG_JSON = "qrpay";
+        String TAG_JSON = "QRpay";
         String TAG_MONEY = "money";
 
         try {

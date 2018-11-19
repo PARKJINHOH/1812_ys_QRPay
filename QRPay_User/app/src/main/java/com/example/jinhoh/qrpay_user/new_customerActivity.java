@@ -2,9 +2,7 @@ package com.example.jinhoh.qrpay_user;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +20,7 @@ import java.net.URL;
 public class new_customerActivity extends AppCompatActivity {
 
     //서버와 연결한 IP주소
-    private static String IP_ADDRESS = "ec2-13-124-143-232.ap-northeast-2.compute.amazonaws.com";
+    private static String IP_ADDRESS = "ec2-13-209-98-128.ap-northeast-2.compute.amazonaws.com";
     private static String TAG = "phptest";
 
     EditText etNickName, etJoinId, etJoinPw, etCheckPw;
@@ -55,7 +53,7 @@ public class new_customerActivity extends AppCompatActivity {
 
                 if (pwd.equals(pwdck)) {
                     InsertData task = new InsertData();
-                    task.execute("http://" + IP_ADDRESS + "/insert.php", id, pwd, nickname);
+                    task.execute("http://" + IP_ADDRESS + "/user_insert.php", id, pwd, nickname);
 
                     etJoinId.setText("");
                     etJoinPw.setText("");

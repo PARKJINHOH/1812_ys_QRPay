@@ -3,13 +3,12 @@ package com.example.jinhoh.qrpay_user;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,57 +20,56 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class pay_historyActivity extends AppCompatActivity {
 
     //서버와 연결한 IP주소
     private static String IP_ADDRESS = "ec2-13-209-98-128.ap-northeast-2.compute.amazonaws.com";
     private static String TAG = "phptest";
 
+    Button BTback;
 
-    String ckID, ckPW;
-    EditText etID, etPW;
-    Button btLogin, btJoin;
+    //리스트뷰
+    ListView listView;
+    ListViewAdapter listViewAdapter;
+    ArrayList<pay_historyBean> pay_historyBeans;
+    pay_historyBean historyBean;
+
     String jsonresult;
+    String id;
 
-    //파싱용 변수
-    String num, id, pwd, nickname;
-
+    //json 뽑아온거
+    String orderName;
+    String orderPrice;
+    String orderStore;
+    String orderDate;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.pay_history);
 
-        etID = (EditText) findViewById(R.id.etID);
-        etPW = (EditText) findViewById(R.id.etPW);
-
-        btLogin = (Button) findViewById(R.id.btLogin);
-        btJoin = (Button) findViewById(R.id.btJoin);
+        listView = (ListView) findViewById(R.id.ListView);
+        BTback = (Button) findViewById(R.id.BTback);
 
 
-        //로그인
-        btLogin.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+
+        GeOrderHistory task = new GeOrderHistory();
+        task.execute("http://" + IP_ADDRESS + "/user_orderHistory.php", id);
+
+        // 돌아가기 버튼
+        BTback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ckID = etID.getText().toString();
-                ckPW = etPW.getText().toString();
-
-                GetData task = new GetData();
-                task.execute("http://" + IP_ADDRESS + "/user_getjson.php", ckID);
-            }
-        });
-
-        btJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), new_customerActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
 
-    private class GetData extends AsyncTask<String, Void, String> {
+    private class GeOrderHistory extends AsyncTask<String, Void, String> {
 
         ProgressDialog progressDialog;
         String errorString = null;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(MainActivity.this,
+            progressDialog = ProgressDialog.show(pay_historyActivity.this,
                     "Please Wait", null, true, true);
         }
 
@@ -98,21 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 //파싱으로 보낸다.
                 jsonresult = result;
                 showResult();
-
-                if (ckPW.equals(pwd)) {
-                    Toast.makeText(getApplicationContext(), nickname + "님 환영합니다.", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), main_formActivity.class);
-                    intent.putExtra("num", num);
-                    intent.putExtra("id", id);
-                    intent.putExtra("nickname", nickname);
-                    startActivity(intent);
-                    etID.setText("");
-                    etPW.setText("");
-                } else {
-                    Toast.makeText(getApplicationContext(), "다시 로그인해 주세요.", Toast.LENGTH_LONG).show();
-                    etID.setText("");
-                    etPW.setText("");
-                }
             }
         }
 
@@ -173,27 +156,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //파싱하는 메소드
     private void showResult() {
 
-        String TAG_JSON = "QRpay";
-        String TAG_NUM = "num";
-        String TAG_ID = "id";
-        String TAG_PWD = "pwd";
-        String TAG_NICKNAME = "nickname";
+        String TAG_JSON = "orderHistory";
+
+        String TAG_ORDERNAME = "orderHis_orderName";
+        String TAG_PRICE = "orderHis_price";
+        String TAG_STORE = "orderHis_store";
+        String TAG_DATE = "orderHis_date";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonresult);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
+            pay_historyBeans = new ArrayList<pay_historyBean>();
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                num = item.getString(TAG_NUM);
-                id = item.getString(TAG_ID);
-                pwd = item.getString(TAG_PWD);
-                nickname = item.getString(TAG_NICKNAME);
+                orderName = item.getString(TAG_ORDERNAME);
+                orderPrice = item.getString(TAG_PRICE);
+                orderStore = item.getString(TAG_STORE);
+                orderDate = item.getString(TAG_DATE);
+
+                historyBean = new pay_historyBean(orderDate, orderStore, orderName, orderPrice);
+                pay_historyBeans.add(historyBean);
             }
+
+            listViewAdapter = new ListViewAdapter(getApplicationContext(), pay_historyBeans);
+            listView.setAdapter(listViewAdapter);
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
