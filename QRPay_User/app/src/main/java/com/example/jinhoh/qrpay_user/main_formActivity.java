@@ -10,6 +10,7 @@ import android.util.Log;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class main_formActivity extends AppCompatActivity {
     TextView MYnickname, MYmoney;
     Uri uri;
     String jsonresult, usermoney;
-    Button BTorderHistory;
+    ImageButton BTorderHistory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class main_formActivity extends AppCompatActivity {
 
         IvQRCodeScan = (ImageView) findViewById(R.id.IvQRCodeScan);
 
-        BTorderHistory = (Button) findViewById(R.id.BTorderHistory);
+        BTorderHistory = (ImageButton) findViewById(R.id.BTorderHistory);
 
         Intent intent = getIntent();
         num = intent.getStringExtra("num");
@@ -107,9 +108,19 @@ public class main_formActivity extends AppCompatActivity {
                 // 스캔된 QRCode --> result.getContents()
                 try {
                     Log.d(TAG, "QRScan - " + result.getContents() + "?id=" + id + "&nick=" + nickname);
-                    uri = Uri.parse(result.getContents() + "?id=" + id + "&nick=" + nickname);
-                    Intent intenturi = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intenturi);
+
+                    String resultParsing = result.getContents();
+                    resultParsing = resultParsing.substring(0,10);
+                    // QR코드 스캔받은 것을 체크
+                    if(resultParsing.equals("http://ec2")){
+                        uri = Uri.parse(result.getContents() + "?id=" + id + "&nick=" + nickname);
+                        Intent intenturi = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intenturi);
+                    }else{
+                        uri = Uri.parse(result.getContents());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
