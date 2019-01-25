@@ -3,7 +3,7 @@
     ini_set('display_errors',1);
     $android = strpos($_SERVER['HTTP_USER_AGENT'], "Android"); 
 
-    include('dbcon.php');
+    include('user_dbcon.php');
 
 
     if( (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['submit'])) || $android )
@@ -21,7 +21,7 @@
         {
             try{
                 
-                $stmt = $con->prepare('INSERT INTO user(id, pwd, nickname) VALUES(:id, :pwd, :nickname)');
+                $stmt = $con->prepare('INSERT INTO userDB(id, pwd, nickname) VALUES(:id, :pwd, :nickname)');
                 $stmt->bindParam(':id', $id);
                 $stmt->bindParam(':pwd', $pwd);
 		        $stmt->bindParam(':nickname', $nickname);

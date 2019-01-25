@@ -3,14 +3,14 @@
     ini_set('display_errors',1); 
     $android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
 
-    include('dbcon.php');
+    include('user_dbcon.php');
 
     if( (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['submit'])) || $android ){
 
         # 아이디
         $id=$_POST['id'];  
 
-        $stmt = $con->prepare("select * from user where id = '$id'");
+        $stmt = $con->prepare("select * from userDB where id = '$id'");
         $stmt->execute();
 
         if ($stmt->rowCount() > 0)
@@ -25,7 +25,7 @@
             }
 
             header('Content-Type: application/json; charset=utf8');
-            $json = json_encode(array("qrpay"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
+            $json = json_encode(array("QRpay"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
             echo $json;
         }
     }

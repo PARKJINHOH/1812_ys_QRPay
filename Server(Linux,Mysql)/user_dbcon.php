@@ -1,9 +1,9 @@
 <?php
 
-    $host = '13.124.143.232';
+    $host = '13.209.98.128';
     $username = 'root'; # MySQL 계정 아이디
     $password = '1234'; # MySQL 계정 패스워드
-    $dbname = 'qrpay';  # DATABASE 이름
+    $dbname = 'QRpay';  # DATABASE 이름
 
 
     $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');

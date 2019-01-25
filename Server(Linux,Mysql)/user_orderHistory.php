@@ -10,7 +10,7 @@
         # 아이디
         $id=$_POST['id'];  
 
-        $stmt = $con->prepare("select user_money from userDB where id = '$id'");
+        $stmt = $con->prepare("select * from orderDB where orderHis_id = '$id'");
         $stmt->execute();
 
         if ($stmt->rowCount() > 0)
@@ -21,11 +21,11 @@
             {
                 extract($row);
                 //json 형식
-                array_push($data, array('money'=>$user_money));
+                array_push($data, array('orderHis_orderName'=>$orderHis_orderName,'orderHis_price'=>$orderHis_price,'orderHis_store'=>$orderHis_store,'orderHis_date'=>$orderHis_date));
             }
 
             header('Content-Type: application/json; charset=utf8');
-            $json = json_encode(array("QRpay"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
+            $json = json_encode(array("orderHistory"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
             echo $json;
         }
     }
